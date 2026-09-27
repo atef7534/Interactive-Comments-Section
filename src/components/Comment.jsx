@@ -5,6 +5,7 @@ import minusIcon from "../assets/icon-minus.svg";
 import minusIconFocus from "../assets/icon-minus-focus.svg";
 import replyIcon from "../assets/icon-reply.svg";
 import Reply from "./Reply";
+import { getAvatar } from "../utils/images";
 
 export default function Comment(props) {
   // Like state for the main comment
@@ -87,7 +88,7 @@ export default function Comment(props) {
           <div className="row">
             <img
               className="commenter-logo"
-              src={props.comment.user.image.png}
+              src={getAvatar(props.comment.user.image.png)}
               alt="A profile photo"
             />
             <h1 className="commenter-name"> {props.comment.user.username} </h1>
