@@ -3,6 +3,7 @@ import minusIcon from "../assets/icon-minus.svg";
 import replyIcon from "../assets/icon-reply.svg";
 import editIcon from "../assets/icon-edit.svg";
 import deleteIcon from "../assets/icon-delete.svg";
+import { getAvatar } from "../utils/images";
 
 export default function Reply({ reply, index, handleRepliesLike, userName }) {
   return (
@@ -31,7 +32,7 @@ export default function Reply({ reply, index, handleRepliesLike, userName }) {
         <div className="row">
           <img
             className="commenter-logo"
-            src={reply.user.image.png}
+            src={getAvatar(reply.user.image.png)}
             alt="A profile photo"
           />
 
