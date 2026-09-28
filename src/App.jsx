@@ -64,7 +64,7 @@ export default function App() {
   }
 
   async function handleAddComment(content) {
-    const { data: newComment, error } = await supabase
+    const { error } = await supabase
       .from("comments")
       .insert({
         content,
@@ -73,9 +73,7 @@ export default function App() {
         avatar: data.currentUser.image.png,
         parent_id: null,
         replying_to: null,
-      })
-      .select()
-      .single();
+      });
 
     if (error) {
       console.error("Error adding comment:", error);
@@ -83,21 +81,7 @@ export default function App() {
       return false;
     }
 
-    const commentToAdd = {
-      id: newComment.id,
-      content: newComment.content,
-      createdAt: formatCreatedAt(newComment.created_at),
-      score: newComment.score,
-      user: {
-        username: newComment.username,
-        image: {
-          png: newComment.avatar,
-        },
-      },
-      replies: [],
-    };
-
-    setComments((prevComments) => [...prevComments, commentToAdd]);
+    await fetchComments();
     setErrorMessage("");
     return true;
   }
