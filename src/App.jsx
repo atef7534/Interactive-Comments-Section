@@ -4,19 +4,24 @@ import AddComment from "./components/AddComment";
 import data from "../data.json";
 
 export default function App() {
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState(data.comments);
 
   function handleAddComment(content) {
     const newComment = {
       id: Date.now(),
       content,
+      createdAt: "just now",
       score: 0,
-      username: data.currentUser.username,
-      avatar: data.currentUser.image.png,
+      user: {
+        image: data.currentUser.image,
+        username: data.currentUser.username,
+      },
+      replies: [],
     };
 
-    // Add it to your React state
     setComments((prevComments) => [...prevComments, newComment]);
+
+    return true;
   }
 
   return (
