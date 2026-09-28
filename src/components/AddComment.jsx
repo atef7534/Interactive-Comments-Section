@@ -4,7 +4,7 @@ import { getAvatar } from "../utils/images";
 export default function AddComment({ currentUser, onAddComment }) {
   const [content, setContent] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     const trimmedContent = content.trim();
@@ -13,8 +13,11 @@ export default function AddComment({ currentUser, onAddComment }) {
       return;
     }
 
-    onAddComment(trimmedContent);
-    setContent("");
+    const wasAdded = await onAddComment(trimmedContent);
+
+    if (wasAdded) {
+      setContent("");
+    }
   }
 
   return (
