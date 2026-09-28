@@ -73,8 +73,9 @@ body {
   line-height: 2;
 }
 
-/* .col-commenter {
-} */
+.col-commenter {
+  flex: 1;
+}
 
 .col-commenter .row:first-child {
   display: flex;
