@@ -7,12 +7,16 @@ import { supabase } from "./lib/supabaseClient";
 export default function App() {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     fetchComments();
   }, []);
 
   async function fetchComments() {
+    setLoading(true);
+    setErrorMessage("");
+
     const { data: rows, error } = await supabase
       .from("comments")
       .select("*")
@@ -20,6 +24,7 @@ export default function App() {
 
     if (error) {
       console.error("Error fetching comments:", error);
+      setErrorMessage("We couldn't load the comments. Please try again.");
       setLoading(false);
       return;
     }
@@ -74,13 +79,14 @@ export default function App() {
 
     if (error) {
       console.error("Error adding comment:", error);
-      return;
+      setErrorMessage("We couldn't add your comment. Please try again.");
+      return false;
     }
 
     const commentToAdd = {
       id: newComment.id,
       content: newComment.content,
-      createdAt: "just now",
+      createdAt: formatCreatedAt(newComment.created_at),
       score: newComment.score,
       user: {
         username: newComment.username,
@@ -92,14 +98,29 @@ export default function App() {
     };
 
     setComments((prevComments) => [...prevComments, commentToAdd]);
+    setErrorMessage("");
+    return true;
   }
 
   if (loading) {
     return <p>Loading comments...</p>;
   }
 
+  if (errorMessage && comments.length === 0) {
+    return (
+      <main>
+        <p>{errorMessage}</p>
+        <button type="button" onClick={fetchComments}>
+          Try again
+        </button>
+      </main>
+    );
+  }
+
   return (
     <>
+      {errorMessage && <p role="alert">{errorMessage}</p>}
+
       <CommentsPerUser
         comments={comments}
         username={data.currentUser.username}
@@ -116,7 +137,10 @@ export default function App() {
 function formatCreatedAt(dateString) {
   const createdAt = new Date(dateString);
   const now = new Date();
-  const differenceInSeconds = Math.floor((now - createdAt) / 1000);
+  const differenceInSeconds = Math.max(
+    0,
+    Math.floor((now - createdAt) / 1000),
+  );
 
   if (differenceInSeconds < 60) {
     return "just now";
@@ -125,22 +149,26 @@ function formatCreatedAt(dateString) {
   const differenceInMinutes = Math.floor(differenceInSeconds / 60);
 
   if (differenceInMinutes < 60) {
-    return \`\${differenceInMinutes} minute\${differenceInMinutes === 1 ? "" : "s"} ago\`;
+    return formatRelativeTime(differenceInMinutes, "minute");
   }
 
   const differenceInHours = Math.floor(differenceInMinutes / 60);
 
   if (differenceInHours < 24) {
-    return \`\${differenceInHours} hour\${differenceInHours === 1 ? "" : "s"} ago\`;
+    return formatRelativeTime(differenceInHours, "hour");
   }
 
   const differenceInDays = Math.floor(differenceInHours / 24);
 
   if (differenceInDays < 30) {
-    return \`\${differenceInDays} day\${differenceInDays === 1 ? "" : "s"} ago\`;
+    return formatRelativeTime(differenceInDays, "day");
   }
 
   const differenceInMonths = Math.floor(differenceInDays / 30);
 
-  return \`\${differenceInMonths} month\${differenceInMonths === 1 ? "" : "s"} ago\`;
+  return formatRelativeTime(differenceInMonths, "month");
+}
+
+function formatRelativeTime(value, unit) {
+  return `${value} ${unit}${value === 1 ? "" : "s"} ago`;
 }
