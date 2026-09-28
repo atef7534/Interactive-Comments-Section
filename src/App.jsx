@@ -6,8 +6,19 @@ import data from "../data.json";
 export default function App() {
   const [comments, setComments] = useState(data.comments);
 
-  function handleAddComment(comment) {
-    setComments((prevComments) => [...prevComments, comment]);
+  function handleAddComment(content) {
+    const newComment = {
+      id: Date.now(),
+      content,
+      createdAt: "just now",
+      score: 0,
+      user: data.currentUser,
+      replies: [],
+    };
+
+    setComments((prevComments) => [...prevComments, newComment]);
+
+    return true;
   }
 
   return (
