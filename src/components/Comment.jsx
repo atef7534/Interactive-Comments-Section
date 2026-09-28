@@ -58,6 +58,7 @@ export default function Comment(props) {
     setPlusFocus(true);
     setMinusFocus(false);
   }
+
   function handleMinusFocus() {
     setPlusFocus(false);
     setMinusFocus(true);
