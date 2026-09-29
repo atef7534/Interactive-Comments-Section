@@ -178,11 +178,10 @@ export default function Comment({ comment, username }) {
 
           <div className="row">
             {isEditing ? (
-              <div className="edit-form">
+              <div className="reply-form">
                 <textarea
                   value={editedContent}
                   onChange={(event) => setEditedContent(event.target.value)}
-                  className="edit-reply"
                 />
 
                 <button onClick={handleSaveEdit}>Update</button>
