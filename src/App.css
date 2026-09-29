@@ -18,6 +18,12 @@ body {
   background-color: var(--grey-100);
 }
 
+#root {
+  width: 50%;
+  margin: 0 auto;
+  min-width: 700px;
+}
+
 /* Styling the comment */
 .comment {
   display: flex;
@@ -197,6 +203,12 @@ body {
   font-size: 1rem;
   letter-spacing: -0.5px;
   caret-color: var(--purple-600);
+  outline: none;
+  border: 2px solid #ddd;
+}
+
+.add-comment form textarea:focus {
+  border-color: var(--purple-600);
 }
 
 .add-comment form input {
@@ -208,4 +220,50 @@ body {
   padding: 12px 25px;
   border-radius: 8px;
   text-transform: uppercase;
+}
+
+.reply-form {
+  width: 80%;
+  margin-left: auto;
+  background-color: white;
+  margin-right: 5%;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.reply-form #add-reply {
+  flex-grow: 1;
+  padding: 10px 20px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  resize: none;
+  height: 80px;
+  font-family: "Rubik", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  outline: none;
+}
+
+.reply-form #add-reply:focus {
+  border-color: var(--purple-600);
+}
+
+.reply-form button {
+  background-color: var(--purple-600);
+  padding: 7px 20px;
+  font-size: 1.1rem;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  align-self: flex-start;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.disabled-btn {
+  opacity: 0.3;
 }

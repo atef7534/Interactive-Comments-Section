@@ -22,10 +22,7 @@ export default function AddComment({ currentUser, onAddComment }) {
 
   return (
     <div className="add-comment">
-      <img
-        src={getAvatar(currentUser.image.png)}
-        alt="A user profile photo."
-      />
+      <img src={getAvatar(currentUser.image.png)} alt="A user profile photo." />
 
       <form className="add-comment-form" onSubmit={handleSubmit}>
         <textarea

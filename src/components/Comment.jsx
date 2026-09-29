@@ -134,6 +134,7 @@ export default function Comment(props) {
             index={index}
             handleRepliesLike={handleRepliesLike}
             userName={props.username}
+            setAllReplies={setReplies}
           />
         ))}
       </div>

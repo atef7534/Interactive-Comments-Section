@@ -45,7 +45,8 @@
               "png": "/src/assets/avatars/image-ramsesmiron.png",
               "webp": "/src/assets/avatars/image-ramsesmiron.webp"
             },
-            "username": "ramsesmiron"
+            "username": "ramsesmiron",
+            "added": true
           }
         },
         {
@@ -59,7 +60,8 @@
               "png": "/src/assets/avatars/image-juliusomo.png",
               "webp": "/src/assets/avatars/image-juliusomo.webp"
             },
-            "username": "juliusomo"
+            "username": "juliusomo",
+            "added": true
           }
         }
       ]

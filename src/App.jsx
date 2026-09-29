@@ -19,7 +19,10 @@ export default function App() {
       replies: [],
     };
 
-    setComments((prevComments) => [...prevComments, newComment]);
+    setComments((prevComments) => {
+      console.log([...prevComments, newComment]);
+      return [...prevComments, newComment];
+    });
 
     return true;
   }
