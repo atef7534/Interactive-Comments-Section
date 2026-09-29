@@ -412,7 +412,7 @@ body {
 
   .add-comment {
     width: calc(100% - 20px);
-    bottom: 100px;
+    bottom: 10px;
     padding: 12px;
   }
 
