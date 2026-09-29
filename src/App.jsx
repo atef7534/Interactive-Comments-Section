@@ -6,6 +6,12 @@ import data from "../data.json";
 export default function App() {
   const [comments, setComments] = useState(data.comments);
 
+  function handleDeleteComment(commentId) {
+    setComments((previousComments) =>
+      previousComments.filter((comment) => comment.id !== commentId),
+    );
+  }
+
   function handleAddComment(content) {
     const newComment = {
       id: Date.now(),
@@ -32,6 +38,7 @@ export default function App() {
       <CommentsPerUser
         comments={comments}
         username={data.currentUser.username}
+        onDeleteComment={handleDeleteComment}
       />
 
       <AddComment
