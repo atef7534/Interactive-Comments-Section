@@ -272,3 +272,56 @@ body {
 .disabled-btn {
   opacity: 0.3;
 }
+
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgb(0 0 0 / 50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.delete-modal {
+  width: 400px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.delete-modal h2 {
+  color: var(--grey-800);
+  margin-bottom: 15px;
+}
+
+.delete-modal p {
+  color: var(--grey-500);
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-actions button {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.modal-actions button:first-child {
+  background-color: var(--grey-500);
+}
+
+.modal-actions button:last-child {
+  background-color: var(--pink-400);
+}
