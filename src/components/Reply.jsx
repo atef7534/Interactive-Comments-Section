@@ -171,7 +171,7 @@ export default function Reply({
             value={replyContent}
             onChange={(event) => setReplyContent(event.target.value)}
             placeholder={`Reply to @${currentReply.user.username}`}
-            className="edit-reply"
+            
           />
 
           <button onClick={handleAddReply}>Reply</button>
