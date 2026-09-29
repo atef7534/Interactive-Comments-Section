@@ -272,7 +272,6 @@ body {
   opacity: 0.3;
 }
 
-
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -325,7 +324,6 @@ body {
   background-color: var(--pink-400);
 }
 
-
 @media (max-width: 700px) {
   #root {
     width: calc(100% - 20px);
@@ -333,13 +331,15 @@ body {
   }
 
   .comment {
+    position: relative;
+    display: block;
     margin: 10px 0;
     padding: 15px;
-    gap: 12px;
+    padding-bottom: 62px;
   }
 
-  .col-rate {
-    flex-shrink: 0;
+  .col-commenter {
+    width: 100%;
   }
 
   .col-commenter .row:first-child {
@@ -360,11 +360,42 @@ body {
     font-size: 0.85rem;
   }
 
+  .comment-content {
+    line-height: 1.45;
+  }
+
+  /* Mobile action bar: votes on the left, edit/delete/reply on the right. */
+  .col-rate {
+    position: absolute;
+    left: 15px;
+    bottom: 12px;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .btn-cnt {
+    padding: 7px 9px;
+  }
+
+  .likes {
+    line-height: 1;
+    min-width: 22px;
+    text-align: center;
+  }
+
   .edit-or-reply {
-    width: 100%;
-    justify-content: flex-end;
+    position: absolute;
+    right: 15px;
+    bottom: 12px;
+    width: auto;
     margin-left: 0;
     gap: 15px;
+    align-items: center;
+  }
+
+  .delete-btn,
+  .reply-btn {
+    margin-left: 0;
   }
 
   .reply-form {
@@ -422,6 +453,7 @@ body {
 
   .comment {
     padding: 12px;
+    padding-bottom: 58px;
     gap: 10px;
   }
 
@@ -439,12 +471,23 @@ body {
     line-height: 1.45;
   }
 
+  .col-rate {
+    left: 12px;
+    bottom: 10px;
+  }
+
   .btn-cnt {
-    padding: 7px 9px;
+    padding: 6px 8px;
   }
 
   .likes {
     font-size: 0.9rem;
+  }
+
+  .edit-or-reply {
+    right: 12px;
+    bottom: 10px;
+    gap: 12px;
   }
 
   .replies {
