@@ -29,7 +29,9 @@ export default function Comment({ comment, username, onDeleteComment }) {
   const isCurrentUser = comment.user.username === username;
 
   function handleCommentVote(vote) {
-    setCommentVote((previousVote) => (previousVote === vote ? 0 : vote));
+    setCommentVote((previousVote) =>
+      vote === -1 && previousVote === 1 ? previousVote - 1 : vote,
+    );
   }
 
   function handleRepliesLike(replyIndex, vote) {
@@ -130,7 +132,7 @@ export default function Comment({ comment, username, onDeleteComment }) {
               setMinusFocus(true);
             }}
             onClick={() => handleCommentVote(-1)}
-            disabled={commentVote === -1}
+            disabled={commentVote === 0}
           >
             <img
               src={minusFocus ? minusIconFocus : minusIcon}
