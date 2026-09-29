@@ -29,7 +29,7 @@ export default function Comment({ comment, username, onDeleteComment }) {
   const isCurrentUser = comment.user.username === username;
 
   function handleCommentVote(vote) {
-    setCommentVote(vote);
+    setCommentVote((previousVote) => (previousVote === vote ? 0 : vote));
   }
 
   function handleRepliesLike(replyIndex, vote) {
