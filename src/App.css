@@ -22,6 +22,7 @@ body {
   width: 50%;
   margin: 0 auto;
   min-width: 700px;
+  padding-bottom: 120px;
 }
 
 /* Styling the comment */
@@ -166,16 +167,20 @@ body {
 }
 
 .add-comment {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 1000;
   display: flex;
   align-items: flex-start;
-  width: 90%;
-  margin: 0 auto;
+  width: 45vw;
+  min-width: 630px;
   background-color: white;
   border-radius: 5px;
-  margin-top: 20px;
   gap: 10px;
   padding: 20px;
-  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgb(0 0 0 / 10%);
 }
 
 .add-comment img {
