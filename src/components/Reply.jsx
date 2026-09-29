@@ -6,6 +6,7 @@ import editIcon from "../assets/icon-edit.svg";
 import deleteIcon from "../assets/icon-delete.svg";
 import { getAvatar } from "../utils/images";
 import data from "../../data.json";
+import DeleteModal from "./DeleteModal";
 
 export default function Reply({
   reply: currentReply,
@@ -18,6 +19,7 @@ export default function Reply({
   const [replyContent, setReplyContent] = useState("");
 
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editedContent, setEditedContent] = useState(currentReply.content);
 
   const isCurrentUserReply = currentReply.user.username === currentUserName;
@@ -120,7 +122,7 @@ export default function Reply({
               {isCurrentUserReply && (
                 <button
                   className="delete-btn"
-                  onClick={handleDeleteReply}
+                  onClick={() => setIsDeleteModalOpen(true)}
                   disabled={isEditing}
                 >
                   <img src={deleteIcon} alt="A delete icon" />
@@ -164,6 +166,17 @@ export default function Reply({
           </div>
         </div>
       </div>
+
+      {isDeleteModalOpen && (
+        <DeleteModal
+          itemType="reply"
+          onCancel={() => setIsDeleteModalOpen(false)}
+          onConfirm={() => {
+            handleDeleteReply();
+            setIsDeleteModalOpen(false);
+          }}
+        />
+      )}
 
       {isReplyFormOpen && (
         <div className="reply-form">
