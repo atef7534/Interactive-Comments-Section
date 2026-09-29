@@ -226,7 +226,8 @@ body {
   text-transform: uppercase;
 }
 
-.reply-form {
+.reply-form,
+.edit-form {
   width: calc(100% - 30px);
   margin-left: 30px;
   background-color: white;
@@ -239,7 +240,8 @@ body {
   gap: 10px;
 }
 
-.reply-form textarea {
+.reply-form textarea,
+.edit-form textarea {
   flex-grow: 1;
   padding: 10px 20px;
   border: 2px solid #ddd;
@@ -252,11 +254,13 @@ body {
   outline: none;
 }
 
-.reply-form textarea:focus {
+.reply-form textarea:focus,
+.edit-form textarea:focus {
   border-color: var(--purple-600);
 }
 
-.reply-form button {
+.reply-form button,
+.edit-form button {
   background-color: var(--purple-600);
   padding: 7px 20px;
   font-size: 1.1rem;
@@ -327,7 +331,7 @@ body {
 @media (max-width: 700px) {
   #root {
     width: calc(100% - 20px);
-    padding-bottom: 155px;
+    padding-bottom: 300px;
   }
 
   .comment {
@@ -336,6 +340,7 @@ body {
     margin: 10px 0;
     padding: 15px;
     padding-bottom: 62px;
+    margin-left: auto;
   }
 
   .col-commenter {
@@ -398,7 +403,8 @@ body {
     margin-left: 0;
   }
 
-  .reply-form {
+  .reply-form,
+  .edit-form {
     width: calc(100% - 20px);
     margin-left: 20px;
     padding: 12px;
@@ -406,12 +412,14 @@ body {
 
   .add-comment {
     width: calc(100% - 20px);
-    bottom: 10px;
+    bottom: 100px;
     padding: 12px;
   }
 
   .add-comment img {
     width: 35px;
+    position: absolute;
+    bottom: 14px;
   }
 
   .add-comment form {
