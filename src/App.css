@@ -235,7 +235,7 @@ body {
   gap: 10px;
 }
 
-.edit-reply {
+.reply-form textarea {
   flex-grow: 1;
   padding: 10px 20px;
   border: 2px solid #ddd;
@@ -248,7 +248,7 @@ body {
   outline: none;
 }
 
-.reply-form #add-reply:focus {
+.reply-form textarea:focus {
   border-color: var(--purple-600);
 }
 
