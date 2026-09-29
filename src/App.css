@@ -19,16 +19,15 @@ body {
 }
 
 #root {
-  width: 50%;
+  width: min(90vw, 900px);
   margin: 0 auto;
-  min-width: 700px;
-  padding-bottom: 120px;
+  padding-bottom: 140px;
 }
 
 /* Styling the comment */
 .comment {
   display: flex;
-  width: 90%;
+  width: 100%;
   margin: 20px auto 10px;
   padding: 20px;
   background-color: white;
@@ -44,7 +43,7 @@ body {
   content: "";
   position: absolute;
   top: 0;
-  left: 10%;
+  left: 14px;
   width: 2px;
   background-color: #67727e27;
   height: 100%;
@@ -52,9 +51,9 @@ body {
 }
 
 .replies {
-  width: 80%;
-  margin-left: auto;
-  margin-right: 5%;
+  width: calc(100% - 30px);
+  margin-left: 30px;
+  margin-right: 0;
 }
 
 .col-rate {
@@ -174,8 +173,8 @@ body {
   z-index: 1000;
   display: flex;
   align-items: flex-start;
-  width: 45vw;
-  min-width: 630px;
+  width: min(90vw, 900px);
+  min-width: 0;
   background-color: white;
   border-radius: 5px;
   gap: 10px;
@@ -228,10 +227,10 @@ body {
 }
 
 .reply-form {
-  width: 80%;
-  margin-left: auto;
+  width: calc(100% - 30px);
+  margin-left: 30px;
   background-color: white;
-  margin-right: 5%;
+  margin-right: 0;
   padding: 20px;
   border-radius: 10px;
   display: flex;
@@ -324,4 +323,163 @@ body {
 
 .modal-actions button:last-child {
   background-color: var(--pink-400);
+}
+
+
+@media (max-width: 700px) {
+  #root {
+    width: calc(100% - 20px);
+    padding-bottom: 155px;
+  }
+
+  .comment {
+    margin: 10px 0;
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .col-rate {
+    flex-shrink: 0;
+  }
+
+  .col-commenter .row:first-child {
+    flex-wrap: wrap;
+    row-gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .commenter-name {
+    margin-inline: 8px;
+  }
+
+  .you {
+    margin-right: 8px;
+  }
+
+  .when-posted {
+    font-size: 0.85rem;
+  }
+
+  .edit-or-reply {
+    width: 100%;
+    justify-content: flex-end;
+    margin-left: 0;
+    gap: 15px;
+  }
+
+  .reply-form {
+    width: calc(100% - 20px);
+    margin-left: 20px;
+    padding: 12px;
+  }
+
+  .add-comment {
+    width: calc(100% - 20px);
+    bottom: 10px;
+    padding: 12px;
+  }
+
+  .add-comment img {
+    width: 35px;
+  }
+
+  .add-comment form {
+    flex-direction: column;
+  }
+
+  .add-comment form textarea {
+    width: 100%;
+    height: 60px;
+  }
+
+  .add-comment form input {
+    align-self: flex-end;
+    padding: 10px 20px;
+  }
+
+  .delete-modal {
+    width: calc(100% - 40px);
+    max-width: 400px;
+    padding: 25px;
+  }
+
+  .modal-actions {
+    justify-content: stretch;
+  }
+
+  .modal-actions button {
+    flex: 1;
+    padding: 11px 10px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 450px) {
+  #root {
+    width: calc(100% - 12px);
+    padding-bottom: 160px;
+  }
+
+  .comment {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .commenter-logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .commenter-name {
+    font-size: 0.9rem;
+  }
+
+  .comment-content {
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  .btn-cnt {
+    padding: 7px 9px;
+  }
+
+  .likes {
+    font-size: 0.9rem;
+  }
+
+  .replies {
+    width: calc(100% - 16px);
+    margin-left: 16px;
+  }
+
+  .replies-container::before {
+    left: 7px;
+  }
+
+  .reply-form {
+    width: calc(100% - 16px);
+    margin-left: 16px;
+    padding: 10px;
+  }
+
+  .delete-modal {
+    width: calc(100% - 24px);
+    padding: 20px;
+  }
+
+  .delete-modal h2 {
+    font-size: 1.25rem;
+  }
+
+  .delete-modal p {
+    font-size: 0.9rem;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
 }
