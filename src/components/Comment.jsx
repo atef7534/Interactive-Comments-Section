@@ -10,7 +10,7 @@ import Reply from "./Reply";
 import { getAvatar } from "../utils/images";
 import data from "../../data.json";
 
-export default function Comment({ comment, username }) {
+export default function Comment({ comment, username, onDeleteComment }) {
   const [commentVote, setCommentVote] = useState(0);
   const [replies, setReplies] = useState(comment.replies);
 
@@ -153,7 +153,11 @@ export default function Comment({ comment, username }) {
 
             <div className="edit-or-reply">
               {isCurrentUser && (
-                <button className="delete-btn">
+                <button
+                  className="delete-btn"
+                  onClick={() => onDeleteComment(comment.id)}
+                  disabled={isEditing || isReplyFormOpen}
+                >
                   <img src={deleteIcon} alt="A delete icon" />
                   Delete
                 </button>
