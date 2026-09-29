@@ -8,32 +8,36 @@ import deleteIcon from "../assets/icon-delete.svg";
 import editIcon from "../assets/icon-edit.svg";
 import Reply from "./Reply";
 import { getAvatar } from "../utils/images";
+import data from "../../data.json";
 
-export default function Comment(props) {
-  // Like state for the main comment
-  const [commentLike, setCommentLike] = useState(false);
-  // Replies state
-  const [replies, setReplies] = useState(props.comment.replies);
+export default function Comment({ comment, username }) {
+  const [commentVote, setCommentVote] = useState(0);
+  const [replies, setReplies] = useState(comment.replies);
 
   const [plusFocus, setPlusFocus] = useState(false);
   const [minusFocus, setMinusFocus] = useState(false);
 
-  function handleCommentLike(p) {
-    if (p === -1) {
-      setCommentLike(false);
-    } else {
-      setCommentLike(true);
-    }
+  const [isReplyFormOpen, setIsReplyFormOpen] = useState(false);
+  const [replyContent, setReplyContent] = useState("");
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [commentContent, setCommentContent] = useState(comment.content);
+  const [editedContent, setEditedContent] = useState(comment.content);
+
+  const isCurrentUser = comment.user.username === username;
+
+  function handleCommentVote(vote) {
+    setCommentVote(vote);
   }
 
-  function handleRepliesLike(index, p) {
-    setReplies((prevReplies) =>
-      prevReplies.map((reply, i) => {
-        if (i !== index) {
+  function handleRepliesLike(replyIndex, vote) {
+    setReplies((previousReplies) =>
+      previousReplies.map((reply, index) => {
+        if (index !== replyIndex) {
           return reply;
         }
 
-        if (p === 1 && !reply.liked) {
+        if (vote === 1 && !reply.liked) {
           return {
             ...reply,
             score: reply.score + 1,
@@ -41,7 +45,7 @@ export default function Comment(props) {
           };
         }
 
-        if (p === -1 && reply.liked) {
+        if (vote === -1 && reply.liked) {
           return {
             ...reply,
             score: reply.score - 1,
@@ -54,14 +58,49 @@ export default function Comment(props) {
     );
   }
 
-  function handlePlusFocus() {
-    setPlusFocus(true);
-    setMinusFocus(false);
+  function handleAddReply() {
+    const trimmedContent = replyContent.trim();
+
+    if (!trimmedContent) {
+      return;
+    }
+
+    const newReply = {
+      id: Date.now(),
+      content: trimmedContent,
+      createdAt: "just now",
+      score: 0,
+      replyingTo: comment.user.username,
+      user: {
+        image: data.currentUser.image,
+        username: data.currentUser.username,
+        added: false,
+      },
+    };
+
+    setReplies((previousReplies) => [...previousReplies, newReply]);
+    setReplyContent("");
+    setIsReplyFormOpen(false);
   }
 
-  function handleMinusFocus() {
-    setPlusFocus(false);
-    setMinusFocus(true);
+  function handleEdit() {
+    setEditedContent(commentContent);
+    setIsEditing(true);
+  }
+
+  function handleSaveEdit() {
+    const trimmedContent = editedContent.trim();
+
+    if (!trimmedContent) {
+      return;
+    }
+
+    setCommentContent(trimmedContent);
+    setIsEditing(false);
+  }
+
+  function handleReplyAction() {
+    setIsReplyFormOpen(true);
   }
 
   return (
@@ -70,16 +109,26 @@ export default function Comment(props) {
         <div className="col col-rate">
           <button
             className="btn-cnt"
-            onFocus={() => handlePlusFocus()}
-            onClick={() => handleCommentLike(1)}
+            onFocus={() => {
+              setPlusFocus(true);
+              setMinusFocus(false);
+            }}
+            onClick={() => handleCommentVote(1)}
+            disabled={commentVote === 1}
           >
             <img src={plusFocus ? plusIconFocus : plusIcon} alt="A plus icon" />
           </button>
-          <p className="likes"> {props.comment.score + commentLike} </p>
+
+          <p className="likes">{comment.score + commentVote}</p>
+
           <button
             className="btn-cnt"
-            onFocus={() => handleMinusFocus()}
-            onClick={() => handleCommentLike(-1)}
+            onFocus={() => {
+              setPlusFocus(false);
+              setMinusFocus(true);
+            }}
+            onClick={() => handleCommentVote(-1)}
+            disabled={commentVote === -1}
           >
             <img
               src={minusFocus ? minusIconFocus : minusIcon}
@@ -87,53 +136,85 @@ export default function Comment(props) {
             />
           </button>
         </div>
+
         <div className="col col-commenter">
           <div className="row">
             <img
               className="commenter-logo"
-              src={getAvatar(props.comment.user.image.png)}
+              src={getAvatar(comment.user.image.png)}
               alt="A profile photo"
             />
-            <h1 className="commenter-name"> {props.comment.user.username} </h1>
-            {props.comment.user.username === props.username && (
-              <span className="you">You</span>
-            )}
-            <p className="when-posted"> {props.comment.createdAt} </p>
+
+            <h1 className="commenter-name">{comment.user.username}</h1>
+
+            {isCurrentUser && <span className="you">You</span>}
+
+            <p className="when-posted">{comment.createdAt}</p>
+
             <div className="edit-or-reply">
-              {props.comment.user.username === props.username && (
+              {isCurrentUser && (
                 <button className="delete-btn">
-                  <img src={deleteIcon} alt="A reply icon" />
+                  <img src={deleteIcon} alt="A delete icon" />
                   Delete
                 </button>
               )}
-              <button className="reply-btn">
+
+              <button
+                className={`reply-btn ${
+                  isEditing || isReplyFormOpen ? "disabled-btn" : ""
+                }`}
+                onClick={isCurrentUser ? handleEdit : handleReplyAction}
+                disabled={isEditing || isReplyFormOpen}
+              >
                 <img
-                  src={
-                    props.comment.user.username === props.username
-                      ? editIcon
-                      : replyIcon
-                  }
-                  alt="A reply icon"
+                  src={isCurrentUser ? editIcon : replyIcon}
+                  alt={isCurrentUser ? "Edit" : "Reply"}
                 />
-                {props.comment.user.username === props.username
-                  ? "Edit"
-                  : "Reply"}
+
+                {isCurrentUser ? "Edit" : "Reply"}
               </button>
             </div>
           </div>
+
           <div className="row">
-            <p className="comment-content"> {props.comment.content} </p>
+            {isEditing ? (
+              <div className="edit-form">
+                <textarea
+                  value={editedContent}
+                  onChange={(event) => setEditedContent(event.target.value)}
+                  className="edit-reply"
+                />
+
+                <button onClick={handleSaveEdit}>Update</button>
+              </div>
+            ) : (
+              <p className="comment-content">{commentContent}</p>
+            )}
           </div>
         </div>
       </div>
+
+      {isReplyFormOpen && (
+        <div className="reply-form">
+          <textarea
+            value={replyContent}
+            onChange={(event) => setReplyContent(event.target.value)}
+            placeholder={`Reply to @${comment.user.username}`}
+            id="add-reply"
+          />
+
+          <button onClick={handleAddReply}>Reply</button>
+        </div>
+      )}
+
       <div className="replies-container">
-        {replies.map((reply, index) => (
+        {replies.map((reply, replyIndex) => (
           <Reply
             key={reply.id}
             reply={reply}
-            index={index}
+            index={replyIndex}
             handleRepliesLike={handleRepliesLike}
-            userName={props.username}
+            userName={username}
             setAllReplies={setReplies}
           />
         ))}

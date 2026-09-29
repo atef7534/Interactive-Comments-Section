@@ -17,14 +17,17 @@ export default function Reply({
   const [isReplyFormOpen, setIsReplyFormOpen] = useState(false);
   const [replyContent, setReplyContent] = useState("");
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState(currentReply.content);
+
   const isCurrentUserReply = currentReply.user.username === currentUserName;
 
   function handleAddReply() {
     if (!replyContent.trim()) return;
 
-    const replyToAdd = {
+    const newReply = {
       id: Date.now(),
-      content: replyContent,
+      content: replyContent.trim(),
       score: 0,
       replyingTo: currentReply.user.username,
       createdAt: "just now",
@@ -38,7 +41,7 @@ export default function Reply({
     setReplies((previousReplies) => {
       const updatedReplies = [...previousReplies];
 
-      updatedReplies.splice(replyIndex + 1, 0, replyToAdd);
+      updatedReplies.splice(replyIndex + 1, 0, newReply);
 
       return updatedReplies;
     });
@@ -53,10 +56,27 @@ export default function Reply({
     );
   }
 
+  function handleEdit() {
+    setIsEditing(true);
+    setEditedContent(currentReply.content);
+  }
+
+  function handleSaveEdit() {
+    const trimmedContent = editedContent.trim();
+
+    if (!trimmedContent) return;
+
+    setReplies((previousReplies) =>
+      previousReplies.map((reply, index) =>
+        index === replyIndex ? { ...reply, content: trimmedContent } : reply,
+      ),
+    );
+
+    setIsEditing(false);
+  }
+
   function handleReplyAction() {
-    if (!isCurrentUserReply) {
-      setIsReplyFormOpen(true);
-    }
+    setIsReplyFormOpen(true);
   }
 
   return (
@@ -101,7 +121,7 @@ export default function Reply({
                 <button
                   className="delete-btn"
                   onClick={handleDeleteReply}
-                  disabled={isReplyFormOpen}
+                  disabled={isEditing}
                 >
                   <img src={deleteIcon} alt="A delete icon" />
                   Delete
@@ -109,9 +129,11 @@ export default function Reply({
               )}
 
               <button
-                className={`reply-btn ${isReplyFormOpen ? "disabled-btn" : ""}`}
-                onClick={handleReplyAction}
-                disabled={isReplyFormOpen}
+                className={`reply-btn ${
+                  isReplyFormOpen || isEditing ? "disabled-btn" : ""
+                }`}
+                onClick={isCurrentUserReply ? handleEdit : handleReplyAction}
+                disabled={isReplyFormOpen || isEditing}
               >
                 <img
                   src={isCurrentUserReply ? editIcon : replyIcon}
@@ -124,10 +146,21 @@ export default function Reply({
           </div>
 
           <div className="row">
-            <p className="comment-content">
-              <span className="replying-to">@{currentReply.replyingTo} </span>
-              {currentReply.content}
-            </p>
+            {isEditing ? (
+              <div className="edit-form">
+                <textarea
+                  value={editedContent}
+                  onChange={(event) => setEditedContent(event.target.value)}
+                />
+
+                <button onClick={handleSaveEdit}>Update</button>
+              </div>
+            ) : (
+              <p className="comment-content">
+                <span className="replying-to">@{currentReply.replyingTo} </span>
+                {currentReply.content}
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -135,11 +168,10 @@ export default function Reply({
       {isReplyFormOpen && (
         <div className="reply-form">
           <textarea
-            id="add-reply"
-            name="add-reply"
             value={replyContent}
             onChange={(event) => setReplyContent(event.target.value)}
             placeholder={`Reply to @${currentReply.user.username}`}
+            className="edit-reply"
           />
 
           <button onClick={handleAddReply}>Reply</button>
